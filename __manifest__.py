@@ -16,5 +16,5 @@
     'security/ir.model.access.csv',
     'views/book_views.xml',
     'report/book_report.xml',
-],
+]
 }
