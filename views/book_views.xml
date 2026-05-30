@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ========== BOOK VIEWS ========== -->
+
+    <record id="view_book_tree" model="ir.ui.view">
+        <field name="name">library.book.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'available'"
+                  decoration-danger="state == 'borrowed'">
+                <field name="name"/>
+                <field name="author_id"/>
+                <field name="date_published"/>
+                <field name="isbn"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_borrow"
+                            string="Borrow"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'borrowed'"/>
+                    <button name="action_return"
+                            string="Return"
+                            type="object"
+                            class="btn-warning"
+                            invisible="state == 'available'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="author_id"/>
+                        <field name="date_published"/>
+                        <field name="isbn"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========== AUTHOR VIEWS ========== -->
+
+    <record id="view_author_tree" model="ir.ui.view">
+        <field name="name">library.author.tree</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="book_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_author_form" model="ir.ui.view">
+        <field name="name">library.author.form</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="email"/>
+                        <field name="bio"/>
+                    </group>
+                    <notebook>
+                        <page string="Books">
+                            <field name="book_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date_published"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!-- Search View -->
+    <record id="view_book_search" model="ir.ui.view">
+        <field name="name">library.book.search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search string="Search Books">
+
+                <!-- Barre de recherche -->
+                <field name="name" string="Title"/>
+                <field name="author_id" string="Author"/>
+                <field name="isbn" string="ISBN"/>
+
+                <!-- Filtres rapides -->
+                <filter name="available"
+                        string="Available"
+                        domain="[('state', '=', 'available')]"/>
+
+                <filter name="borrowed"
+                        string="Borrowed"
+                        domain="[('state', '=', 'borrowed')]"/>
+
+                <separator/>
+
+                <filter name="published_this_year"
+                        string="Published This Year"
+                        domain="[('date_published', '>=', '2025-01-01')]"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_author"
+                            string="Author"
+                            context="{'group_by': 'author_id'}"/>
+                    <filter name="group_by_state"
+                            string="Status"
+                            context="{'group_by': 'state'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- ========== ACTIONS ========== -->
+
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_library_author" model="ir.actions.act_window">
+        <field name="name">Authors</field>
+        <field name="res_model">library.author</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ========== MENUS ========== -->
+
+    <menuitem id="menu_library_root"
+              name="Library"
+              sequence="10"/>
+
+    <menuitem id="menu_library_books"
+              name="Books"
+              parent="menu_library_root"
+              action="action_library_book"
+              sequence="1"/>
+
+    <menuitem id="menu_library_authors"
+              name="Authors"
+              parent="menu_library_root"
+              action="action_library_author"
+              sequence="2"/>
+
+</odoo>
