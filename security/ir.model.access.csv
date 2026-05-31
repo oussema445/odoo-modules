@@ -1,3 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+<<<<<<< HEAD
 access_hr_employee_custom,access_hr_employee_custom,hr_custom.model_hr_employee_custom,,1,1,1,1
 access_hr_department_custom,access_hr_department_custom,hr_custom.model_hr_department_custom,,1,1,1,1
+=======
+access_library_book,access_library_book,my_library.model_library_book,,1,1,1,1
+access_library_author,access_library_author,my_library.model_library_author,,1,1,1,1
+>>>>>>> 3ca978ea44badb65bbba54fffd9bfe72e7835402
